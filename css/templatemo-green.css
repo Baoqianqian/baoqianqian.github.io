@@ -1,9 +1,4 @@
-/*
 
-Easy Profile Template
-http://www.templatemo.com/tm-467-easy-profile
-
-*/
 
 html, body {
   margin:0;border:0;padding:0;
@@ -40,6 +35,9 @@ h2 {
 }
 
 .tm-border {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
 	border: 5px solid #fff;
 	box-shadow: 2px 2px #000;
 }
@@ -159,21 +157,21 @@ header hr {
 
 /* about section */
 .about {
-  background: #fff;
-  box-shadow: 0px 1px 5px rgba(50,50,50,0.08);
+  /*background: #fff;*/
+  /*box-shadow: 0px 1px 5px rgba(50,50,50,0.08);*/
 }
 
 /* skills section */
 .skills {
   background: #7ac143;
-  color: #f5f5f5;
+  color: green;
 }
 .skills .progress {
   border-radius: 0px;
   height: 4px;
 }
 .skills .progress .progress-bar-primary {
-  background: #208020;
+  background: #999;
 }
 .skills strong {
   display: inline-block;
@@ -184,7 +182,7 @@ header hr {
 /* education section */
 .education {
   background: #7ac143;
-  color: #f5f5f5;
+  color: #fff;
 }
 .education .education-content {
   padding-bottom: 14px;
@@ -221,7 +219,7 @@ header hr {
 /* experience section */
 .experience {
   background: #7ac143;
-  color: #f5f5f5;
+  color: green;
 }
 .experience .experience-content {
   padding-bottom: 14px;
@@ -289,3 +287,21 @@ footer {
     font-size: 20px;
   }
 }
+
+
+
+
+.container_bg1{
+  background-image: url('../images/1.jpg'); 
+  background-size: 100% 100%;
+}
+.container_bg2{
+  background-image: url('../images/bg6.jpg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+/*.container_bg3{
+  background-image: url('../images/bg3.jpg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}*/
