@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="js/jquery_1.12.4.min.js"></script>
+	<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		[v-cloak]{
+			display: none;
+		}
+		.box{
+			width: 1200px;
+			margin: 0 auto;
+		}
+		.head{
+			height: 120px;
+			border-left: 1px solid #000;
+			border-right: 1px solid #000;
+		}
+		#img_box{
+			width: 100px;
+			height: 100px;
+			border:1px solid #000;
+			border-radius: 50%;
+			margin:10px;
+			background-size: cover;
+			float: left;
+		}
+		.username{
+			line-height: 120px;
+			font-size: 20px;
+			float: left;
+			margin-left: 20px;
+		}
+		.cont{
+			min-height: 500px;
+			border:1px solid #000;
+		}
+		.left{
+			height: 500px;
+			border-right: 1px solid #000;
+			padding-left: 0;
+			padding-right: 0;
+		}
+		.create{
+			padding-top:10px;
+			padding-bottom: 10px;
+			border-bottom: 1px solid #000;
+		}
+		.ipt{
+			margin-right: 30px;
+			margin-left: 15px;
+		}
+		.left_box{
+			height: 60px;
+			line-height: 60px;
+			text-align: center;
+			border-bottom: 1px solid #000;
+		}
+		.right{
+			padding:0;
+		}
+		.upload{
+			height: 55px;
+			padding-top: 13px;
+			padding-left: 20px;
+			border-bottom: 1px solid #000;
+		}
+		.file_box{
+			padding:10px;
+			float: left;
+		}
+		.files{
+			width: 100px;
+			height: 100px;
+			margin-bottom: 10px;
+			background:#ccc;
+		}
+		.file_box p{
+			text-align: center;
+			width: 100px;
+		}
+		.exit{
+			width: 100px;
+			height: 100px;
+			line-height: 50px;
+			position: absolute;
+			background: #ccc;
+			top:100%;
+			z-index: 2;
+			left: 20px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="box" v-cloak>
+		<div class="row head">
+			<div class="col-md-4" style="position: relative;">
+				<div id="img_box" @click="exit_type=!exit_type"></div>
+				<div class="username">{{username}}</div>
+				<div class="exit" v-show="exit_type">
+					<p class="btn" data-toggle="modal" data-target="#myModal">修改资料</p>
+					<p class="btn">退出登录</p>
+				</div>
+			</div>
+
+		</div>
+		<div class="row cont">
+			<div>
+				<div class="col-md-3 left">
+					<div class="create">
+						<input type="text" class="ipt" v-model="dir_name">
+						<button class="btn" @click="mkdir">创建</button>
+					</div>
+					<div>
+						<div class="left_box" @click="aaa($index)" v-for="(i,$index) in file" @dblclick="remove">{{i.dir_name}}</div>
+					</div>
+				</div>
+				<div class="col-md-9 right">
+					<div class="upload">
+						<input type="file" @change="filetodir" id="files">
+					</div>
+					<div v-for="j in file_cont">
+						<div class="file_box">
+							<div class="files">{{j.name}}</div>
+							<p>{{j.name}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel">修改资料</h4>
+		      </div>
+		      <div class="modal-body">
+		        <div class="img_box">
+				    <div class="file-box">
+					    <label for="photo">头像</label>
+					    <input type="file" name="photo" id="img_files" class="file-btn" @change="file_btn">
+					    <div id="imgbox"></div>
+				    </div>
+		    	</div>
+				<div class="input-group ipt_box">
+					<span class="input-group-addon" id="basic-addon1">密码：</span>
+					<input type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon1" v-model="val1.pass">
+				</div>
+				<div class="input-group ipt_box">
+					<span class="input-group-addon" id="basic-addon1">昵称：</span>
+					<input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="val1.username">
+				</div>
+				<div class="input-group ipt_box">
+					<span class="input-group-addon" id="basic-addon1">电话：</span>
+					<input type="text" class="form-control" placeholder="tel" aria-describedby="basic-addon1" v-model="val1.tel">
+				</div>
+				<div class="input-group ipt_box">
+					<span class="input-group-addon" id="basic-addon1">邮箱：</span>
+					<input type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon1" v-model="val1.emali">
+				</div>
+				<div class="input-group ipt_box">
+					<span class="input-group-addon" id="basic-addon1">地址：</span>
+					<input type="text" class="form-control" placeholder="Address" aria-describedby="basic-addon1" v-model="val1.address">
+				</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary">确认修改</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!--  -->
+	</div>
+</body>
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript" src="js/vue-resource.js"></script>
+<script type="text/javascript">
+	new Vue({
+		el:'.box',
+		data:{
+			val1:{
+				id:"",
+				pass:"",
+				username:"",
+				tel:"",
+				emali:"",
+				address:"",
+				img_path:"",
+			},
+			exit_type:false,
+			id:"",
+			img_path:"",
+			username:"",
+			file:"",
+			dir_name:"",
+			index:"0",
+			file_cont:"",
+			file_name:"",
+		},
+		methods:{
+			remove(){
+				var type=confirm('是否要删除？');
+				if(type){
+					
+				}
+
+			},
+			file_btn(){
+				var f = img_files.files[0]
+				var d = new FormData
+				d.append('img',f)
+				var xhr=new XMLHttpRequest();
+				xhr.open('post','http://localhost:8000/files/img',false);
+				xhr.send(d);
+				// this.val1.img_path = xhr.response;
+				// imgbox.style.backgroundImage="url(file/"+xhr.response+")";
+			},
+			aaa(index){
+				this.index = index;
+				this.file_cont = this.file[this.index].file;
+				console.log(this.file_cont);
+			},
+			mkdir(){
+				this.$http.post('http://localhost:8000/dir/mkdir',{
+					id:this.id,
+					dir_name:this.dir_name
+				},{emulateJSON:true}).then((data)=>{
+					console.log(data.data);
+					this.file = data.data.file;
+				})
+			},
+			filetodir(){
+				var f = files.files[0];
+				var d = new FormData;
+				d.id=this.id;
+				d.append('fileup',f);
+				console.log(d)
+				var xhr=new XMLHttpRequest();
+				xhr.open('post','http://localhost:8000/file/fileup',false);
+				xhr.send(d);
+				console.log(xhr.response);
+			},
+			// writeFile(){
+			// 	this.$http.post('http://localhost:8000/files/files',{
+			// 		id:this.id,
+			// 		dir_name:this.dir_name[this.index],
+			// 		file_name:this.file_name
+			// 	},{emulateJSON:true}).then((data)=>{
+			// 		console.log(data.data);
+			// 		this.file = data.data.file;
+			// 	})
+			// }
+		},
+		created(){
+			//页面跳转完之后获取数据 创建刷新书籍名称或者内容
+			this.id=localStorage.id;
+			this.$http.get('http://localhost:8000/login/file',{
+				params:{
+					id:this.id
+				}
+			}).then((data)=>{
+				if(data.data.type == "登录成功"){
+					this.file = data.data.file;
+					this.img_path = data.data.img_path;
+					this.username = data.data.username;
+					img_box.style.backgroundImage = 'url(../file/'+this.img_path+')';
+					this.file_cont = this.file[this.index].file;
+				}else{
+					location.href="./index.html";
+				}
+			})
+		}
+	})
+</script>
+</html>
